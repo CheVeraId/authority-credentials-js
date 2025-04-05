@@ -1,0 +1,20 @@
+name: CI and automated releases
+on:
+  pull_request:
+  push:
+    branches: [ main, 'gh-readonly-queue/main/**' ]
+jobs:
+  ci:
+    uses: relaycorp/shared-workflows/.github/workflows/nodejs-lib-ci.yml@main
+
+  release:
+    needs: ci
+    permissions:
+      id-token: write
+      pages: write
+      contents: write  # To create a Git tag
+    uses: relaycorp/shared-workflows/.github/workflows/nodejs-lib-release.yml@main
+    with:
+      api_docs: true
+    secrets:
+      npm_token: ${{ secrets.NPM_TOKEN }}
