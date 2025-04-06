@@ -12,12 +12,12 @@ export async function mockHttpConnections<CallbackResult>(
 
   server.listen({ onUnhandledRequest: 'error' });
 
-  let result: CallbackResult;
   try {
-    result = await callback();
+    // eslint-disable-next-line n/callback-return
+    const result = await callback();
+
+    return [result, requests];
   } finally {
     server.close();
   }
-
-  return [result, requests];
 }

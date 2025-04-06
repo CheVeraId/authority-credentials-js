@@ -1,25 +1,16 @@
-import { ExchangeOptions } from './ExchangeOptions.js';
-import type { Credential } from './Credential.js';
 import packageJson from '../../package.json' with { type: 'json' };
 import { CredentialType } from './CredentialType.js';
+import { ExchangeOptions } from './ExchangeOptions.js';
+import type { VeraidCredential } from './VeraidCredential.js';
 
 const USER_AGENT = `VeraId-Authority-Credential-JS/${packageJson.version}`;
+
+const MS_IN_SECOND = 1000;
 
 /**
  * Base class for exchanging credentials for a VeraId credential.
  */
 export abstract class Exchanger {
-  /**
-   * Generate the `Authorization` request header for the VeraId Authority credential endpoint.
-   * @param vauthCredentialUrl The VeraId Authority endpoint to obtain the credential.
-   * @param timeoutSeconds The timeout (in seconds) to obtain the original credential.
-   * @returns The authorization header.
-   */
-  protected abstract generateVauthAuthHeader(
-    vauthCredentialUrl: URL,
-    timeoutSeconds: number,
-  ): Promise<string>;
-
   /**
    * Exchange the credentials for a VeraId credential.
    * @param vauthCredentialUrl The VeraId Authority endpoint to obtain the credential.
@@ -27,17 +18,16 @@ export abstract class Exchanger {
    */
   public async exchange(
     vauthCredentialUrl: URL,
-    {
-      initialCredentialTimeoutSeconds = 3,
-      vauthCredentialTimeoutSeconds = 3,
-    }: Partial<ExchangeOptions> = {},
-  ): Promise<Credential> {
+    options: Partial<ExchangeOptions> = {},
+  ): Promise<VeraidCredential> {
+    const { initialCredentialTimeoutSeconds = 3, vauthCredentialTimeoutSeconds = 3 } = options;
     const authHeader = await this.generateVauthAuthHeader(
       vauthCredentialUrl,
       initialCredentialTimeoutSeconds,
     );
 
-    const timeoutSignal = AbortSignal.timeout(vauthCredentialTimeoutSeconds * 1000);
+    const timeoutSignal = AbortSignal.timeout(vauthCredentialTimeoutSeconds * MS_IN_SECOND);
+
     const response = await fetch(vauthCredentialUrl, {
       headers: {
         'Authorization': authHeader,
@@ -51,14 +41,27 @@ export abstract class Exchanger {
     }
 
     const contentType = response.headers.get('Content-Type');
+
     if (contentType !== CredentialType.ORG_SIGNATURE_BUNDLE) {
       throw new Error(`VeraId credential response has invalid content type (${contentType})`);
     }
 
     const credential = Buffer.from(await response.arrayBuffer());
+
     return {
-      type: CredentialType.ORG_SIGNATURE_BUNDLE,
       credential,
-    } as Credential;
+      type: CredentialType.ORG_SIGNATURE_BUNDLE,
+    };
   }
+
+  /**
+   * Generate the `Authorization` request header for the VeraId Authority credential endpoint.
+   * @param vauthCredentialUrl The VeraId Authority endpoint to obtain the credential.
+   * @param timeoutSeconds The timeout (in seconds) to obtain the original credential.
+   * @returns The authorization header.
+   */
+  protected abstract generateVauthAuthHeader(
+    vauthCredentialUrl: URL,
+    timeoutSeconds: number,
+  ): Promise<string>;
 }

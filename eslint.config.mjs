@@ -6,4 +6,9 @@ export default defineConfig([
     {
         ignores: ['lib/**', 'coverage/**'],
     },
+    {
+        rules: {
+            'n/no-unsupported-features/node-builtins': 'off',
+        },
+    },
 ]);

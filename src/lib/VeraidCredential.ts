@@ -3,7 +3,7 @@ import type { CredentialType } from './CredentialType.js';
 /**
  * A VeraId credential.
  */
-export interface Credential {
+export interface VeraidCredential {
   /**
    * The serialised credential.
    */

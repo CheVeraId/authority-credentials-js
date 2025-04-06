@@ -1,25 +1,31 @@
 import { delay, HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
 
-import { mockHttpConnections } from '../testUtils/mockHttpConnection.js';
-import { VAUTH_CREDENTIAL_URL, mockVauthCredentialEndpoint } from '../testUtils/vauth.js';
-import { Exchanger } from './Exchanger.js';
 import packageJson from '../../package.json' with { type: 'json' };
-import { VERAID_CREDENTIAL, stubOrgSignatureBundleResponse } from '../testUtils/veraid.js';
+import { mockHttpConnections } from '../testUtils/mockHttpConnection.js';
+import { mockVauthCredentialEndpoint, VAUTH_CREDENTIAL_URL } from '../testUtils/vauth.js';
+import { stubOrgSignatureBundleResponse, VERAID_CREDENTIAL } from '../testUtils/veraid.js';
 import { CredentialType } from './CredentialType.js';
+import { Exchanger } from './Exchanger.js';
+
+const TIMEOUT_SECONDS = 3;
+const MS_IN_SECOND = 1000;
+const TIMEOUT_MS = TIMEOUT_SECONDS * MS_IN_SECOND;
 
 const MOCK_AUTH_HEADER = 'Mock-Scheme mock-token';
 
 const MOCK_VAUTH_CREDENTIAL_ENDPOINT = mockVauthCredentialEndpoint(stubOrgSignatureBundleResponse);
 
 class MockExchanger extends Exchanger {
-  public vaultCredentialUrl: URL | undefined;
   public timeoutSeconds: number | undefined;
 
-  constructor(protected readonly outcome: string | Error) {
+  public vaultCredentialUrl: undefined | URL;
+
+  constructor(protected readonly outcome: Error | string) {
     super();
   }
 
+  // eslint-disable-next-line require-await
   protected async generateVauthAuthHeader(vauthCredentialUrl: URL, timeoutSeconds: number) {
     this.vaultCredentialUrl = vauthCredentialUrl;
     this.timeoutSeconds = timeoutSeconds;
@@ -51,7 +57,7 @@ describe('Exchanger', () => {
         exchanger.exchange(VAUTH_CREDENTIAL_URL),
       );
 
-      expect(exchanger.timeoutSeconds).toBe(3);
+      expect(exchanger.timeoutSeconds).toBe(TIMEOUT_SECONDS);
     });
 
     it('should time out after specified seconds', async () => {
@@ -94,7 +100,8 @@ describe('Exchanger', () => {
     it('should time out after 3 seconds by default', async () => {
       const exchanger = new MockExchanger(MOCK_AUTH_HEADER);
       const handler = mockVauthCredentialEndpoint(async () => {
-        await delay(4000);
+        await delay(TIMEOUT_MS + MS_IN_SECOND);
+
         return new HttpResponse(VERAID_CREDENTIAL);
       });
 
@@ -106,9 +113,10 @@ describe('Exchanger', () => {
     it('should time out after specified seconds', async () => {
       const exchanger = new MockExchanger(MOCK_AUTH_HEADER);
       const timeoutSeconds = 1;
-      const timeoutMs = timeoutSeconds * 1000;
+      const timeoutMs = timeoutSeconds * MS_IN_SECOND;
       const handler = mockVauthCredentialEndpoint(async () => {
-        await delay(timeoutMs + 1000);
+        await delay(timeoutMs + MS_IN_SECOND);
+
         return new HttpResponse(VERAID_CREDENTIAL);
       });
 
