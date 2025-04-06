@@ -1,7 +1,7 @@
 /* eslint-disable n/no-process-env */
 
-import { USER_AGENT } from '../utils/http.js';
 import { JwtExchanger } from '../JwtExchanger.js';
+import { USER_AGENT } from '../utils/http.js';
 
 /**
  * Exchanger of GitHub tokens for VeraId credentials.

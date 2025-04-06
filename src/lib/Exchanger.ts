@@ -1,6 +1,6 @@
-import { USER_AGENT } from './utils/http.js';
 import { CredentialType } from './CredentialType.js';
 import { ExchangeOptions } from './ExchangeOptions.js';
+import { USER_AGENT } from './utils/http.js';
 import type { VeraidCredential } from './VeraidCredential.js';
 
 const MS_IN_SECOND = 1000;
