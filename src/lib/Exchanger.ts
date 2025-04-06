@@ -1,9 +1,7 @@
-import packageJson from '../../package.json' with { type: 'json' };
 import { CredentialType } from './CredentialType.js';
 import { ExchangeOptions } from './ExchangeOptions.js';
+import { USER_AGENT } from './utils/http.js';
 import type { VeraidCredential } from './VeraidCredential.js';
-
-const USER_AGENT = `VeraId-Authority-Credential-JS/${packageJson.version}`;
 
 const MS_IN_SECOND = 1000;
 
