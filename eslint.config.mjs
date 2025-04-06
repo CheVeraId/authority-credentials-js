@@ -4,6 +4,11 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
     ...baseConfig,
     {
-        ignores: ['build/**', 'coverage/**'],
+        ignores: ['lib/**', 'coverage/**'],
+    },
+    {
+        rules: {
+            'n/no-unsupported-features/node-builtins': 'off',
+        },
     },
 ]);
