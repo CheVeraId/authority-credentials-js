@@ -25,7 +25,8 @@
     "static-checks:lint": "eslint .",
     "static-checks:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test": "vitest run src/lib",
-    "test:integration": "vitest run --coverage.enabled=false src/integrationTests",
+    "test:integration": "exit 0",
+    "test:integration:github": "vitest run --coverage.enabled=false src/integrationTests",
     "tsc": "tsc",
     "doc-api": "typedoc src/index.ts --out build/docs",
     "clean": "del-cli build lib test"
