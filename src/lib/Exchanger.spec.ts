@@ -17,7 +17,7 @@ const MOCK_AUTH_HEADER = 'Mock-Scheme mock-token';
 const MOCK_VAUTH_CREDENTIAL_ENDPOINT = mockVauthCredentialEndpoint(stubOrgSignatureBundleResponse);
 
 class MockExchanger extends Exchanger {
-  public timeoutSeconds: number | undefined;
+  public timeoutMs: number | undefined;
 
   public vaultCredentialUrl: undefined | URL;
 
@@ -28,7 +28,7 @@ class MockExchanger extends Exchanger {
   // eslint-disable-next-line require-await
   protected async generateVauthAuthHeader(vauthCredentialUrl: URL, timeoutSeconds: number) {
     this.vaultCredentialUrl = vauthCredentialUrl;
-    this.timeoutSeconds = timeoutSeconds;
+    this.timeoutMs = timeoutSeconds;
 
     if (this.outcome instanceof Error) {
       throw this.outcome;
@@ -57,7 +57,7 @@ describe('Exchanger', () => {
         exchanger.exchange(VAUTH_CREDENTIAL_URL),
       );
 
-      expect(exchanger.timeoutSeconds).toBe(TIMEOUT_SECONDS);
+      expect(exchanger.timeoutMs).toBe(TIMEOUT_MS);
     });
 
     it('should time out after specified seconds', async () => {
@@ -70,7 +70,7 @@ describe('Exchanger', () => {
         }),
       );
 
-      expect(exchanger.timeoutSeconds).toBe(timeoutSeconds);
+      expect(exchanger.timeoutMs).toBe(timeoutSeconds * MS_IN_SECOND);
     });
   });
 

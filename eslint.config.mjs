@@ -4,7 +4,7 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
     ...baseConfig,
     {
-        ignores: ['lib/**', 'coverage/**'],
+        ignores: ['build/**', 'coverage/**', 'lib/**'],
     },
     {
         rules: {

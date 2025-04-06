@@ -23,7 +23,7 @@ export abstract class Exchanger {
     const { initialCredentialTimeoutSeconds = 3, vauthCredentialTimeoutSeconds = 3 } = options;
     const authHeader = await this.generateVauthAuthHeader(
       vauthCredentialUrl,
-      initialCredentialTimeoutSeconds,
+      initialCredentialTimeoutSeconds * MS_IN_SECOND,
     );
 
     const timeoutSignal = AbortSignal.timeout(vauthCredentialTimeoutSeconds * MS_IN_SECOND);
@@ -57,11 +57,11 @@ export abstract class Exchanger {
   /**
    * Generate the `Authorization` request header for the VeraId Authority credential endpoint.
    * @param vauthCredentialUrl The VeraId Authority endpoint to obtain the credential.
-   * @param timeoutSeconds The timeout (in seconds) to obtain the original credential.
+   * @param timeoutMs The timeout (in milliseconds) to obtain the original credential.
    * @returns The authorization header.
    */
   protected abstract generateVauthAuthHeader(
     vauthCredentialUrl: URL,
-    timeoutSeconds: number,
+    timeoutMs: number,
   ): Promise<string>;
 }
