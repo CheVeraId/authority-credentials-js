@@ -6,6 +6,8 @@ on:
 jobs:
   ci:
     uses: relaycorp/shared-workflows/.github/workflows/nodejs-lib-ci.yml@main
+    permissions:
+      id-token: write
 
   release:
     needs: ci
