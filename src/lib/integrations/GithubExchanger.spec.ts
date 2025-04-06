@@ -12,7 +12,9 @@ const TOKEN = 'github-token-123';
 const AUDIENCE = 'the-audience';
 const TIMEOUT_MS = 1111;
 
-const JWT_RESPONSE_BODY = { value: JWT };
+const JWT_RESPONSE_BODY = {
+     value: JWT,
+};
 
 class StubGithubExchanger extends GithubExchanger {
   public callFetchJwt(audience: string, timeoutMs: number): Promise<string> {

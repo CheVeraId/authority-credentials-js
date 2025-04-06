@@ -54,6 +54,7 @@ export class GithubExchanger extends JwtExchanger {
     }
 
     const { value } = await response.json();
+
     return value;
   }
 }
