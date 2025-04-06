@@ -24,7 +24,7 @@
     "static-checks": "run-p static-checks:*",
     "static-checks:lint": "eslint .",
     "static-checks:prettier": "prettier \"src/**/*.ts\" --list-different",
-    "test": "vitest run",
+    "test": "vitest run src/lib",
     "test:integration": "vitest run --coverage.enabled=false src/integrationTests",
     "tsc": "tsc",
     "doc-api": "typedoc src/index.ts --out build/docs",

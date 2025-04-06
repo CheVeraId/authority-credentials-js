@@ -1,4 +1,4 @@
-import { USER_AGENT } from '../utils/http.js';
+import { USER_AGENT } from './utils/http.js';
 import { CredentialType } from './CredentialType.js';
 import { ExchangeOptions } from './ExchangeOptions.js';
 import type { VeraidCredential } from './VeraidCredential.js';
