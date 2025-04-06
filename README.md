@@ -6,7 +6,7 @@ JS library to automate the exchange of cloud credentials for VeraId Authority cr
 
 This library is available on NPM as [`@veraid/authority-credentials`](https://www.npmjs.com/package/@veraid/authority-credentials).
 
-## Integrations
+## Built-in Integrations
 
 ### GitHub
 
@@ -27,6 +27,30 @@ const { credential } = await exchanger.exchange(EXCHANGE_ENDPOINT);
 ```
 
 Note that for the above to work, [the GitHub workflow must have been granted the `id-token: write` permission](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect#adding-permissions-settings). [Learn more on the GitHub documentation](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect).
+
+### Amazon Web Services
+
+AWS doesn't appear to offer a passwordless way for a workflow to obtain JWTs from Amazon Cognito, so AWS will be supported via [OAuth2 Client Credentials](#oauth2-client-credentials).
+
+### Google Cloud Platform
+
+[Google Cloud Platform support is on the roadmap](https://relaycorp.atlassian.net/browse/VAUTH-15).
+
+### Kubernetes
+
+[Kubernetes support is on the roadmap](https://relaycorp.atlassian.net/browse/VAUTH-17).
+
+### Microsoft Azure
+
+[Azure support is on the roadmap](https://relaycorp.atlassian.net/browse/VAUTH-14).
+
+### OAuth2 Client Credentials
+
+[OAuth2 Client Credentials support is on the roadmap](https://relaycorp.atlassian.net/browse/VAUTH-16).
+
+## Custom Integrations
+
+You can create a custom integration by extending the [`JwtExchanger` class](https://docs.veraid.net/authority-credentials-js/classes/JwtExchanger.html).
 
 ## API docs
 
