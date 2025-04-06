@@ -13,11 +13,11 @@ const GH_JWKS_URL = `${GH_ISSUER}/.well-known/jwks`;
 
 const GH_TOKEN_REQUEST_URL = process.env.ACTIONS_ID_TOKEN_REQUEST_URL!;
 const GH_TOKEN_REQUEST_TOKEN = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN!;
-const GH_REPO = process.env.GITHUB_REPO!;
+const GH_REPO = process.env.GITHUB_REPOSITORY!;
 
 if (!GH_TOKEN_REQUEST_URL || !GH_TOKEN_REQUEST_TOKEN || !GH_REPO) {
   throw new Error(
-    'ACTIONS_ID_TOKEN_REQUEST_URL, ACTIONS_ID_TOKEN_REQUEST_TOKEN, and GITHUB_REPO must be set',
+    'This is either not running on GitHub or the permission id-token is not set to "write"',
   );
 }
 
