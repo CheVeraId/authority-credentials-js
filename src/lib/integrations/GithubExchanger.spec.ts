@@ -13,7 +13,7 @@ const AUDIENCE = 'the-audience';
 const TIMEOUT_MS = 1111;
 
 const JWT_RESPONSE_BODY = {
-     value: JWT,
+  value: JWT,
 };
 
 class StubGithubExchanger extends GithubExchanger {
