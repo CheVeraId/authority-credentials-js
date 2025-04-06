@@ -47,9 +47,6 @@ describe('Github', () => {
 
     const jwt = await exchanger.callFetchJwt(AUDIENCE);
 
-    // eslint-disable-next-line
-    console.log('jwt fields', Object.keys(jwt));
-
     const payload = await verifyGithubToken(jwt, AUDIENCE);
     expect(payload.repository).toBe(GH_REPO);
   });

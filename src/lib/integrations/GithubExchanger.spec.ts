@@ -12,6 +12,8 @@ const TOKEN = 'github-token-123';
 const AUDIENCE = 'the-audience';
 const TIMEOUT_MS = 1111;
 
+const JWT_RESPONSE_BODY = { value: JWT };
+
 class StubGithubExchanger extends GithubExchanger {
   public callFetchJwt(audience: string, timeoutMs: number): Promise<string> {
     return this.fetchJwt(audience, timeoutMs);
@@ -29,7 +31,7 @@ describe('GithubExchanger', () => {
   describe('fetchJwt', () => {
     it('should use the specified request URL', async () => {
       const exchanger = new StubGithubExchanger(REQUEST_URL, TOKEN);
-      const mockResponse = new HttpResponse(JWT);
+      const mockResponse = HttpResponse.json(JWT_RESPONSE_BODY);
       const handler = mockGithubTokenEndpoint(mockResponse);
 
       const [, [request]] = await mockHttpConnections([handler], () =>
@@ -41,7 +43,7 @@ describe('GithubExchanger', () => {
 
     it('should use the specified token', async () => {
       const exchanger = new StubGithubExchanger(REQUEST_URL, TOKEN);
-      const mockResponse = new HttpResponse(JWT);
+      const mockResponse = HttpResponse.json(JWT_RESPONSE_BODY);
       const handler = mockGithubTokenEndpoint(mockResponse);
 
       const [, [request]] = await mockHttpConnections([handler], () =>
@@ -53,7 +55,7 @@ describe('GithubExchanger', () => {
 
     it('should use the specified audience', async () => {
       const exchanger = new StubGithubExchanger(REQUEST_URL, TOKEN);
-      const mockResponse = new HttpResponse(JWT);
+      const mockResponse = HttpResponse.json(JWT_RESPONSE_BODY);
       const handler = mockGithubTokenEndpoint(mockResponse);
 
       const [, [request]] = await mockHttpConnections([handler], () =>
@@ -69,7 +71,7 @@ describe('GithubExchanger', () => {
       const handler = mockGithubTokenEndpoint(async () => {
         await delay(TIMEOUT_MS + delayMs);
 
-        return new HttpResponse(JWT);
+        return HttpResponse.json(JWT_RESPONSE_BODY);
       });
 
       await expect(
@@ -79,7 +81,7 @@ describe('GithubExchanger', () => {
 
     it('should use the User-Agent "VeraId-Authority-Credential-JS"', async () => {
       const exchanger = new StubGithubExchanger(REQUEST_URL, TOKEN);
-      const mockResponse = new HttpResponse(JWT);
+      const mockResponse = HttpResponse.json(JWT_RESPONSE_BODY);
       const handler = mockGithubTokenEndpoint(mockResponse);
 
       const [, [request]] = await mockHttpConnections([handler], () =>
@@ -105,7 +107,7 @@ describe('GithubExchanger', () => {
 
     it('should return JWT upon success', async () => {
       const exchanger = new StubGithubExchanger(REQUEST_URL, TOKEN);
-      const mockResponse = new HttpResponse(JWT);
+      const mockResponse = HttpResponse.json(JWT_RESPONSE_BODY);
       const handler = mockGithubTokenEndpoint(mockResponse);
 
       const [jwt] = await mockHttpConnections([handler], () =>

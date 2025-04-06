@@ -53,6 +53,7 @@ export class GithubExchanger extends JwtExchanger {
       throw new Error(`Failed to fetch JWT (HTTP ${response.status})`);
     }
 
-    return response.text();
+    const { value } = await response.json();
+    return value;
   }
 }
