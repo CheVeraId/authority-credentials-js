@@ -27,8 +27,8 @@
     "test": "vitest run",
     "test:integration": "exit 0",
     "tsc": "tsc",
-    "doc-api": "typedoc src/index.ts --out docs",
-    "clean": "del-cli docs lib test"
+    "doc-api": "typedoc src/index.ts --out build/docs",
+    "clean": "del-cli build lib test"
   },
   "engines": {
     "node": ">=20"
