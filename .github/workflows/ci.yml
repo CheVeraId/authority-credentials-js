@@ -15,9 +15,7 @@ jobs:
       id-token: write
     steps:
       - name: Debug OIDC Env Vars
-        run: |
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL: ${ACTIONS_ID_TOKEN_REQUEST_URL:-'Not set'}"
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-'Not set'}"
+        run: env
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
