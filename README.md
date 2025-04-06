@@ -1,6 +1,6 @@
 # `@veraid/authority-credentials`
 
-JS library to automate the exchange of cloud credentials for VeraId Authority credentials.
+JS library to automate the exchange of cloud credentials for [VeraId](https://veraid.net) credentials via [VeraId Authority](https://docs.relaycorp.tech/veraid-authority/).
 
 ## Installation
 
@@ -18,11 +18,7 @@ import { GithubExchanger } from '@veraid/authority-credentials';
 // Replace with the actual URL for exchanging credentials
 const EXCHANGE_ENDPOINT = new URL('https://veraid-authority.example/credentials/123');
 
-const exchanger = new GithubExchanger(
-  process.env.ACTIONS_ID_TOKEN_REQUEST_URL,
-  process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN,
-);
-
+const exchanger = GithubExchanger.initFromEnv();
 const { credential } = await exchanger.exchange(EXCHANGE_ENDPOINT);
 ```
 

@@ -1,3 +1,5 @@
+/* eslint-disable n/no-process-env */
+
 import { USER_AGENT } from '../../utils/http.js';
 import { JwtExchanger } from '../JwtExchanger.js';
 
@@ -15,6 +17,25 @@ export class GithubExchanger extends JwtExchanger {
     protected readonly token: string,
   ) {
     super();
+  }
+
+  /**
+   * Create a new GitHub exchanger from environment variables.
+   * @returns A new GitHub exchanger.
+   * @throws If `ACTIONS_ID_TOKEN_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` is not set.
+   */
+  public static initFromEnv(): GithubExchanger {
+    const requestUrl = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
+    if (!requestUrl) {
+      throw new Error('ACTIONS_ID_TOKEN_REQUEST_URL must be set');
+    }
+
+    const token = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
+    if (!token) {
+      throw new Error('ACTIONS_ID_TOKEN_REQUEST_TOKEN must be set');
+    }
+
+    return new GithubExchanger(requestUrl, token);
   }
 
   protected override async fetchJwt(audience: string, timeoutMs: number): Promise<string> {
