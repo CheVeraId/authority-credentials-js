@@ -1,5 +1,15 @@
-import type { HttpHandler } from 'msw';
+import type { HttpHandler, HttpResponse, HttpResponseResolver } from 'msw';
 import { setupServer } from 'msw/node';
+
+function isFunction(value: unknown): value is Function {
+  return typeof value === 'function';
+}
+
+export function makeResolver(
+  responseOrResolver: HttpResponse | HttpResponseResolver,
+): HttpResponseResolver {
+  return isFunction(responseOrResolver) ? responseOrResolver : () => responseOrResolver;
+}
 
 export async function mockHttpConnections<CallbackResult>(
   handlers: HttpHandler[],
