@@ -6,9 +6,28 @@ JS library to automate the exchange of cloud credentials for [VeraId](https://ve
 
 This library is available on NPM as [`@veraid/authority-credentials`](https://www.npmjs.com/package/@veraid/authority-credentials).
 
+## Usage
+
+To use any of the [built-in integrations](#built-in-integrations) and have them auto-configure themselves (e.g. from environment variables), use [`initExchangerFromEnv`](https://docs.veraid.net/authority-credentials-js/modules/initFromEnv.html#initfromenvname-exchangername) as follows:
+
+```ts
+import { initExchangerFromEnv } from '@veraid/authority-credentials';
+
+// Replace with the actual URL for exchanging credentials
+const EXCHANGE_ENDPOINT = new URL('https://veraid-authority.example/credentials/123');
+
+// Replace with the exchanger you want to use
+const EXCHANGER_NAME = 'GITHUB';
+
+const exchanger = initExchangerFromEnv(EXCHANGER_NAME);
+const { credential } = await exchanger.exchange(EXCHANGE_ENDPOINT);
+```
+
+Alternatively, you can use the specific integration class directly.
+
 ## Built-in Integrations
 
-### GitHub
+### GitHub (`GITHUB`)
 
 [`GithubExchanger`](https://docs.veraid.net/authority-credentials-js/classes/GithubExchanger.html) can be used to exchange GitHub tokens for VeraId credentials as follows:
 
@@ -22,7 +41,7 @@ const exchanger = GithubExchanger.initFromEnv();
 const { credential } = await exchanger.exchange(EXCHANGE_ENDPOINT);
 ```
 
-Note that for the above to work, [the GitHub workflow must have been granted the `id-token: write` permission](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect#adding-permissions-settings). [Learn more on the GitHub documentation](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect).
+When configured from environment variables, `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN` must be set. They're automatically set when [the GitHub job has been granted the `id-token: write` permission](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect#adding-permissions-settings). [Learn more on the GitHub documentation](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect).
 
 ### Amazon Web Services
 
